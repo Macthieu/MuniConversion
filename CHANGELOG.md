@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2026-03-11
+
+### Fixed
+
+- GitHub Actions release workflow parsing issue:
+  - removed direct `secrets.*` usage inside `if:` expressions
+  - switched to `env`-based conditions
+- Manual (`workflow_dispatch`) release runs on non-tag refs now succeed:
+  - upload generated ZIP as workflow artifact
+  - skip GitHub Release publication unless ref is a tag
+
 ## [1.0.1] - 2026-03-11
 
 ### Added
