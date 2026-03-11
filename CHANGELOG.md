@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-03-11
+
+### Added
+
+- New built-in profiles:
+  - DOCX -> DOC
+  - XLSX -> XLS
+  - PPTX -> PPT
+  - ODT -> PDF
+  - ODS -> PDF
+  - ODP -> PDF
+- Profile quick search field in the Conversion section
+- Live profile summary (source filter, target extension, LibreOffice format)
+
+### Changed
+
+- README updated with the extended profile set
+- Profile selection UX improved for larger profile lists
+
 ## [0.2.0] - 2026-03-11
 
 ### Added
