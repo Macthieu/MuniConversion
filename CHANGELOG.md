@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2026-03-11
+
+### Added
+
+- Unit tests for scanner and path/collision logic
+- Test support utilities for temporary file tree setup
+- CI step running `swift test` on GitHub Actions
+
+### Changed
+
+- README updated to mention `swift build` + `swift test` CI checks
+
 ## [0.1.0] - 2026-03-11
 
 ### Added
