@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-03-11
+
+### Fixed
+
+- Release packaging fixed to avoid macOS "app is damaged" error on downloaded builds:
+  - ad-hoc codesign is now applied to the full `.app` bundle in `build_dist.sh`
+  - signature verification is enforced during build packaging
+- `Info.plist` version fields are now normalized for macOS compatibility:
+  - strip leading `v` from tags (e.g. `v1.0.3` -> `1.0.3`)
+  - fallback to valid numeric version components
+
 ## [1.0.2] - 2026-03-11
 
 ### Fixed

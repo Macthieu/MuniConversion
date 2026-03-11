@@ -7,7 +7,8 @@ Ce document décrit la préparation d'un artefact `.app` distribuable sur macOS.
 - `scripts/release/build_dist.sh`
   - Build release Swift
   - Génération `MuniConvert.app`
-  - Création d'un ZIP non signé (`dist/*-unsigned.zip`)
+  - Signature ad-hoc du bundle (compatibilité Gatekeeper de base)
+  - Création d'un ZIP non notarisé (`dist/*-unsigned.zip`)
 
 - `scripts/release/sign_notarize.sh`
   - Signature du bundle `.app`
@@ -63,7 +64,7 @@ Secrets recommandés pour release signée/notarisée:
 - `APPLE_TEAM_ID`
 - `KEYCHAIN_PASSWORD`
 
-Sans ces secrets, le workflow publie tout de même un ZIP non signé.
+Sans ces secrets, le workflow publie tout de même un ZIP ad-hoc signé (non notarisé).
 
 Astuce:
 
@@ -83,6 +84,12 @@ Installation côté utilisateur:
 2. Clic droit sur `MuniConvert.app` puis `Ouvrir`
 3. Confirmer dans la fenêtre de sécurité macOS
 4. Si blocage persistant: `Réglages Système > Confidentialité et sécurité > Ouvrir quand même`
+
+Si macOS affiche `MuniConvert est endommagé`:
+
+1. Supprimer l'ancienne app copiée dans `/Applications`
+2. Télécharger une release `v1.0.3` ou plus récente
+3. Redécompresser l'archive puis relancer l'app
 
 Note:
 

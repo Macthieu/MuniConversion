@@ -4,10 +4,32 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 APP_NAME="${APP_NAME:-MuniConvert}"
 BUNDLE_ID="${BUNDLE_ID:-com.municonvert.app}"
-VERSION="${VERSION:-$(git -C "$ROOT_DIR" describe --tags --exact-match 2>/dev/null || echo dev)}"
+RAW_VERSION="${VERSION:-$(git -C "$ROOT_DIR" describe --tags --exact-match 2>/dev/null || echo dev)}"
 OUTPUT_DIR="${OUTPUT_DIR:-$ROOT_DIR/dist}"
 
 mkdir -p "$OUTPUT_DIR"
+
+normalize_version_for_plist() {
+  local raw="$1"
+  local cleaned major minor patch
+
+  cleaned="$(echo "$raw" | sed -E 's/^[vV]//; s/[^0-9.].*$//')"
+
+  if [[ -z "$cleaned" ]]; then
+    echo "0.0.0"
+    return
+  fi
+
+  IFS='.' read -r major minor patch _ <<<"$cleaned"
+  major="${major:-0}"
+  minor="${minor:-0}"
+  patch="${patch:-0}"
+
+  echo "${major}.${minor}.${patch}"
+}
+
+PLIST_VERSION="$(normalize_version_for_plist "$RAW_VERSION")"
+DIST_VERSION="${RAW_VERSION:-$PLIST_VERSION}"
 
 echo "[build] swift build -c release --product $APP_NAME"
 swift build -c release --product "$APP_NAME"
@@ -41,9 +63,9 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
     <key>CFBundleIdentifier</key>
     <string>$BUNDLE_ID</string>
     <key>CFBundleVersion</key>
-    <string>$VERSION</string>
+    <string>$PLIST_VERSION</string>
     <key>CFBundleShortVersionString</key>
-    <string>$VERSION</string>
+    <string>$PLIST_VERSION</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>LSMinimumSystemVersion</key>
@@ -59,9 +81,14 @@ if [[ -f "$ROOT_DIR/assets/AppIcon.icns" ]]; then
   /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string AppIcon" "$APP_DIR/Contents/Info.plist" || true
 fi
 
-UNSIGNED_ZIP="$OUTPUT_DIR/${APP_NAME}-${VERSION}-unsigned.zip"
+echo "[sign] applying ad-hoc signature to app bundle"
+codesign --force --deep --sign - "$APP_DIR"
+codesign --verify --deep --strict --verbose=2 "$APP_DIR"
+
+UNSIGNED_ZIP="$OUTPUT_DIR/${APP_NAME}-${DIST_VERSION}-unsigned.zip"
 rm -f "$UNSIGNED_ZIP"
 ditto -c -k --keepParent "$APP_DIR" "$UNSIGNED_ZIP"
 
 echo "[ok] app bundle: $APP_DIR"
+echo "[ok] plist version: $PLIST_VERSION"
 echo "[ok] unsigned zip: $UNSIGNED_ZIP"

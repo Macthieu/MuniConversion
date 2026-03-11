@@ -163,7 +163,7 @@ MuniConvert/
 
 MuniConvert peut être distribué sans signature/notarisation:
 
-- Le workflow release publie un ZIP non signé (`*-unsigned.zip`)
+- Le workflow release publie un ZIP ad-hoc signé (`*-unsigned.zip`) mais non notarisé
 - L'application reste utilisable localement
 
 Premier lancement sur macOS (app non signée):
@@ -171,6 +171,12 @@ Premier lancement sur macOS (app non signée):
 1. Clic droit sur l'app > `Ouvrir`
 2. Confirmer l'ouverture
 3. Si nécessaire: `Réglages Système > Confidentialité et sécurité > Ouvrir quand même`
+
+Si macOS affiche `MuniConvert est endommagé`:
+
+1. Supprimer l'ancienne copie de `MuniConvert.app`
+2. Télécharger une release >= `v1.0.3`
+3. Redécompresser puis relancer avec clic droit > `Ouvrir`
 
 ## Licence GPLv3
 
