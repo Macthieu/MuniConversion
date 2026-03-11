@@ -64,3 +64,7 @@ Secrets recommandés pour release signée/notarisée:
 - `KEYCHAIN_PASSWORD`
 
 Sans ces secrets, le workflow publie tout de même un ZIP non signé.
+
+Astuce:
+
+- Utiliser `scripts/release/configure_github_secrets.sh` pour injecter tous les secrets en une seule commande.

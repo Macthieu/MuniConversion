@@ -22,6 +22,16 @@ Ajouter la valeur dans le secret GitHub: `APPLE_CERTIFICATE_BASE64`.
 - `APPLE_APP_SPECIFIC_PASSWORD`
 - `APPLE_TEAM_ID`
 
+## Option rapide (recommandée): script automatique
+
+Depuis la racine du repo:
+
+```bash
+bash scripts/release/configure_github_secrets.sh --repo Macthieu/MuniConvert --cert /chemin/vers/certificate.p12
+```
+
+Le script configure tous les secrets requis dans GitHub.
+
 ## 4) Vérifier l'identité locale
 
 ```bash
