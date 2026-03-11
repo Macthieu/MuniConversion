@@ -7,6 +7,7 @@ Ce document décrit la préparation d'un artefact `.app` distribuable sur macOS.
 - `scripts/release/build_dist.sh`
   - Build release Swift
   - Génération `MuniConvert.app`
+  - Copie des bundles de ressources SwiftPM (`*.bundle`) dans l'app
   - Génération automatique de l'icône `.icns` depuis `assets/AppIcon.png` (si présent)
   - Signature ad-hoc du bundle (compatibilité Gatekeeper de base)
   - Création d'un ZIP non notarisé (`dist/*-unsigned.zip`)

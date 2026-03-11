@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-03-11
+
+### Fixed
+
+- Startup crash on distributed `.app` builds after multilingual resources introduction:
+  - release packaging now embeds SwiftPM resource bundles (`*.bundle`) into `MuniConvert.app/Contents/Resources`
+  - prevents `Bundle.module` assertion failure on startup in downloaded app releases
+
 ## [1.1.0] - 2026-03-11
 
 ### Added

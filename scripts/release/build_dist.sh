@@ -89,6 +89,13 @@ if [[ -f "$ICON_ICNS" ]]; then
   /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string AppIcon" "$APP_DIR/Contents/Info.plist" || true
 fi
 
+# SwiftPM localized resources are emitted as *.bundle next to the binary.
+while IFS= read -r -d '' bundle_dir; do
+  bundle_name="$(basename "$bundle_dir")"
+  echo "[resources] embedding SwiftPM bundle: $bundle_name"
+  cp -R "$bundle_dir" "$APP_DIR/Contents/Resources/$bundle_name"
+done < <(find "$BIN_DIR" -maxdepth 1 -type d -name "*.bundle" -print0)
+
 echo "[sign] applying ad-hoc signature to app bundle"
 codesign --force --deep --sign - "$APP_DIR"
 codesign --verify --deep --strict --verbose=2 "$APP_DIR"
