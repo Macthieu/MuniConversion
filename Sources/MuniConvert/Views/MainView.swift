@@ -222,10 +222,25 @@ struct MainView: View {
     private var resultsZone: some View {
         SectionCard(step: "3", title: "Résultats") {
             VStack(alignment: .leading, spacing: 10) {
+                runStateBanner
                 ProgressView(value: viewModel.progress)
                 Text(viewModel.progressMessage)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+
+                Text(viewModel.runSummary)
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(Color(nsColor: .controlBackgroundColor))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .stroke(Color.secondary.opacity(0.15), lineWidth: 1)
+                    )
 
                 statsSummary
 
@@ -267,12 +282,34 @@ struct MainView: View {
         }
     }
 
+    private var runStateBanner: some View {
+        HStack(spacing: 8) {
+            Text("État du lot")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Text(viewModel.runState.displayName.uppercased())
+                .font(.caption.monospacedDigit())
+                .fontWeight(.semibold)
+                .foregroundStyle(viewModel.runState.color)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 4)
+                .background(
+                    Capsule(style: .continuous)
+                        .fill(viewModel.runState.color.opacity(0.12))
+                )
+            Spacer(minLength: 0)
+        }
+    }
+
     private var statsSummary: some View {
         HStack(spacing: 8) {
             statPill(title: "Scannés", value: viewModel.stats.totalScanned)
             statPill(title: "Correspondants", value: viewModel.stats.totalMatched)
             statPill(title: "Convertis", value: viewModel.stats.converted)
+            statPill(title: "Simulation", value: viewModel.stats.dryRun)
             statPill(title: "Ignorés", value: viewModel.stats.ignored)
+            statPill(title: "Cible existe", value: viewModel.stats.skippedExisting)
             statPill(title: "Erreurs", value: viewModel.stats.errors)
             Spacer(minLength: 0)
         }

@@ -10,6 +10,44 @@ struct AlertInfo: Identifiable {
     let message: String
 }
 
+enum RunState {
+    case idle
+    case running
+    case completed
+    case cancelled
+    case failed
+
+    var displayName: String {
+        switch self {
+        case .idle:
+            return "Prêt"
+        case .running:
+            return "En cours"
+        case .completed:
+            return "Terminé"
+        case .cancelled:
+            return "Annulé"
+        case .failed:
+            return "Erreur"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .idle:
+            return .secondary
+        case .running:
+            return .blue
+        case .completed:
+            return .green
+        case .cancelled:
+            return .orange
+        case .failed:
+            return .red
+        }
+    }
+}
+
 @MainActor
 final class MainViewModel: ObservableObject {
     @Published var sourceFolderURL: URL? {
@@ -54,6 +92,8 @@ final class MainViewModel: ObservableObject {
     @Published var progress: Double = 0
     @Published var progressMessage: String = "Prêt"
     @Published var isRunning: Bool = false
+    @Published var runState: RunState = .idle
+    @Published var runSummary: String = "Aucun traitement exécuté."
 
     @Published var alertInfo: AlertInfo?
 
@@ -184,11 +224,11 @@ final class MainViewModel: ObservableObject {
                         eventHandler: eventHandler()
                     )
                     self.stats = computedStats
+                    finishRun(operationLabel: "Analyse")
                 } catch {
-                    handleRunError(error)
+                    handleRunError(error, operationLabel: "Analyse")
+                    finishRun(operationLabel: "Analyse")
                 }
-
-                finishRun(message: "Analyse terminée")
             }
         } catch {
             alertInfo = AlertInfo(title: "Analyse impossible", message: error.localizedDescription)
@@ -211,6 +251,7 @@ final class MainViewModel: ObservableObject {
             }
 
             startNewRun(initialMessage: options.dryRun ? "Simulation en cours" : "Conversion en cours")
+            let operationLabel = options.dryRun ? "Simulation" : "Conversion"
 
             runTask = Task {
                 do {
@@ -220,11 +261,11 @@ final class MainViewModel: ObservableObject {
                         eventHandler: eventHandler()
                     )
                     self.stats = computedStats
+                    finishRun(operationLabel: operationLabel)
                 } catch {
-                    handleRunError(error)
+                    handleRunError(error, operationLabel: operationLabel)
+                    finishRun(operationLabel: operationLabel)
                 }
-
-                finishRun(message: options.dryRun ? "Simulation terminée" : "Conversion terminée")
             }
         } catch {
             alertInfo = AlertInfo(title: "Conversion impossible", message: error.localizedDescription)
@@ -237,6 +278,7 @@ final class MainViewModel: ObservableObject {
         }
 
         progressMessage = "Annulation en cours..."
+        runSummary = "Annulation demandée..."
 
         runTask?.cancel()
         Task {
@@ -249,6 +291,8 @@ final class MainViewModel: ObservableObject {
         stats = ConversionStats()
         progress = 0
         progressMessage = "Prêt"
+        runState = .idle
+        runSummary = "Aucun traitement exécuté."
     }
 
     func exportLogs() {
@@ -299,29 +343,51 @@ final class MainViewModel: ObservableObject {
         progress = 0
         progressMessage = initialMessage
         isRunning = true
+        runState = .running
+        runSummary = "Traitement en cours..."
     }
 
-    private func finishRun(message: String) {
+    private func finishRun(operationLabel: String) {
         isRunning = false
         if progress < 1 {
             progress = 1
         }
 
-        if progressMessage == "Annulation en cours..." {
-            progressMessage = "Annulé"
-        } else {
-            progressMessage = message
+        if runState == .running {
+            runState = .completed
+        }
+
+        switch runState {
+        case .completed:
+            progressMessage = "\(operationLabel) terminée"
+            runSummary = buildSummary(prefix: "\(operationLabel) terminée")
+        case .cancelled:
+            progressMessage = "\(operationLabel) annulée"
+            runSummary = buildSummary(prefix: "\(operationLabel) annulée")
+        case .failed:
+            if runSummary == "Traitement en cours..." || runSummary == "Aucun traitement exécuté." {
+                runSummary = "\(operationLabel) interrompue."
+            }
+            progressMessage = "\(operationLabel) en erreur"
+        case .idle:
+            progressMessage = "Prêt"
+            runSummary = "Aucun traitement exécuté."
+        case .running:
+            break
         }
 
         runTask = nil
     }
 
-    private func handleRunError(_ error: Error) {
+    private func handleRunError(_ error: Error, operationLabel: String) {
         if let mcError = error as? MuniConvertError, case .cancelled = mcError {
-            alertInfo = AlertInfo(title: "Opération annulée", message: "Le traitement a été interrompu.")
+            runState = .cancelled
+            runSummary = buildSummary(prefix: "\(operationLabel) annulée")
             return
         }
 
+        runState = .failed
+        runSummary = "\(operationLabel) interrompue: \(error.localizedDescription)"
         alertInfo = AlertInfo(title: "Erreur", message: error.localizedDescription)
     }
 
@@ -362,10 +428,27 @@ final class MainViewModel: ObservableObject {
         switch event {
         case .log(let entry):
             logs.append(entry)
+            stats = deriveStatsFromLogs()
         case .progress(let value, let message):
             progress = min(max(value, 0), 1)
             progressMessage = message
         }
+    }
+
+    private func buildSummary(prefix: String) -> String {
+        "\(prefix) — Scannés: \(stats.totalScanned), Correspondants: \(stats.totalMatched), Convertis: \(stats.converted), Simulation: \(stats.dryRun), Ignorés: \(stats.ignored), Ignorés (cible existe): \(stats.skippedExisting), Erreurs: \(stats.errors)."
+    }
+
+    private func deriveStatsFromLogs() -> ConversionStats {
+        var derived = ConversionStats()
+        derived.totalMatched = logs.reduce(0) { $0 + ($1.status == .matched ? 1 : 0) }
+        derived.ignored = logs.reduce(0) { $0 + ($1.status == .ignored ? 1 : 0) }
+        derived.converted = logs.reduce(0) { $0 + ($1.status == .converted ? 1 : 0) }
+        derived.errors = logs.reduce(0) { $0 + ($1.status == .failed ? 1 : 0) }
+        derived.skippedExisting = logs.reduce(0) { $0 + ($1.status == .skippedExisting ? 1 : 0) }
+        derived.dryRun = logs.reduce(0) { $0 + ($1.status == .dryRun ? 1 : 0) }
+        derived.totalScanned = derived.totalMatched + derived.ignored
+        return derived
     }
 
     private func loadSettings() {

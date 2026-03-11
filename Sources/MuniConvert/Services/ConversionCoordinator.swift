@@ -40,13 +40,20 @@ actor ConversionCoordinator {
         stats.ignored = scanResult.totalIgnored
 
         if let eventHandler {
+            await eventHandler(.progress(
+                0.05,
+                "Analyse: \(scanResult.totalScanned) fichier(s) détecté(s), profil \(options.profile.displayName)"
+            ))
             for entry in scanResult.logs {
                 if isCancellationRequested() {
                     throw MuniConvertError.cancelled
                 }
                 await eventHandler(.log(entry))
             }
-            await eventHandler(.progress(1.0, "Analyse terminée"))
+            await eventHandler(.progress(
+                1.0,
+                "Analyse terminée — \(scanResult.matchedFiles.count) correspondant(s) sur \(scanResult.totalScanned) fichier(s)"
+            ))
         }
 
         return stats
@@ -71,6 +78,11 @@ actor ConversionCoordinator {
         stats.ignored = scanResult.totalIgnored
 
         if let eventHandler {
+            let modeLabel = options.dryRun ? "Simulation" : "Conversion"
+            await eventHandler(.progress(
+                0.03,
+                "\(modeLabel): \(scanResult.totalScanned) fichier(s) scanné(s), \(scanResult.matchedFiles.count) à traiter"
+            ))
             for entry in scanResult.logs {
                 if isCancellationRequested() {
                     throw MuniConvertError.cancelled
@@ -94,7 +106,11 @@ actor ConversionCoordinator {
 
             let progressStart = Double(index) / Double(totalToProcess)
             if let eventHandler {
-                await eventHandler(.progress(progressStart, "Traitement \(index + 1)/\(totalToProcess)"))
+                let modeLabel = options.dryRun ? "Simulation" : "Conversion"
+                await eventHandler(.progress(
+                    progressStart,
+                    "\(modeLabel) \(index + 1)/\(totalToProcess): \(sourceFile.lastPathComponent)"
+                ))
             }
 
             var targetPath = ""
@@ -116,8 +132,8 @@ actor ConversionCoordinator {
                         )))
                         let progressEnd = Double(index + 1) / Double(totalToProcess)
                         let message = options.dryRun
-                            ? "Simulation \(index + 1)/\(totalToProcess)"
-                            : "Conversion \(index + 1)/\(totalToProcess)"
+                            ? "Simulation \(index + 1)/\(totalToProcess) terminée"
+                            : "Conversion \(index + 1)/\(totalToProcess) terminée"
                         await eventHandler(.progress(progressEnd, message))
                     }
                     continue
@@ -185,17 +201,15 @@ actor ConversionCoordinator {
             let progressEnd = Double(index + 1) / Double(totalToProcess)
             if let eventHandler {
                 let message = options.dryRun
-                    ? "Simulation \(index + 1)/\(totalToProcess)"
-                    : "Conversion \(index + 1)/\(totalToProcess)"
+                    ? "Simulation \(index + 1)/\(totalToProcess) terminée"
+                    : "Conversion \(index + 1)/\(totalToProcess) terminée"
                 await eventHandler(.progress(progressEnd, message))
             }
         }
 
         if let eventHandler {
-            await eventHandler(.progress(
-                1.0,
-                options.dryRun ? "Simulation terminée" : "Conversion terminée"
-            ))
+            let modeLabel = options.dryRun ? "Simulation" : "Conversion"
+            await eventHandler(.progress(1.0, "\(modeLabel) terminée — convertis: \(stats.converted), simulation: \(stats.dryRun), ignorés: \(stats.ignored), erreurs: \(stats.errors)"))
         }
 
         return stats
