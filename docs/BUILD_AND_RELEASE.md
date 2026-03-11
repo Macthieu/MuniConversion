@@ -37,14 +37,38 @@ Ce guide documente une procédure simple et répétable pour préparer une relea
 4. Créer la release GitHub:
    - `gh release create vX.Y.Z --title "MuniConvert vX.Y.Z" --notes "..."`
 
-## 5. Distribution macOS (périmètre)
+## 5. Distribution `.app` locale
 
-MuniConvert est actuellement distribué comme projet source Swift Package.
+Scripts disponibles:
 
-Pour une distribution `.app` grand public:
+- `bash scripts/release/build_dist.sh`
+  - build release
+  - crée `dist/MuniConvert.app`
+  - crée `dist/MuniConvert-<version>-unsigned.zip`
 
-- signature Apple Developer
-- notarisation Apple
-- vérification Gatekeeper
+- `bash scripts/release/sign_notarize.sh dist/MuniConvert.app`
+  - signe l'app
+  - notarise si credentials présents
+  - crée `dist/MuniConvert-<version>-macOS.zip`
 
-Ces étapes nécessitent un compte Apple Developer actif et sont hors périmètre automatique de ce guide.
+## 6. Distribution via GitHub Actions
+
+Workflow dédié:
+
+- `.github/workflows/release-macos.yml`
+
+Déclenchement:
+
+- push d'un tag `v*`
+- lancement manuel `workflow_dispatch`
+
+Le workflow publie les archives `.zip` sur la release GitHub.
+
+## 7. Signature / notarisation Apple
+
+Consulter:
+
+- `docs/MACOS_DISTRIBUTION.md`
+- `docs/APPLE_SECRETS_SETUP.md`
+
+Ces étapes nécessitent un compte Apple Developer actif et les secrets GitHub appropriés.

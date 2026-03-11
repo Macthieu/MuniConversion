@@ -152,6 +152,12 @@ MuniConvert/
 - Plan de releases : voir `docs/RELEASES.md`
 - Guide build/release : voir `docs/BUILD_AND_RELEASE.md`
 - CI GitHub : `swift build` + `swift test` sur macOS à chaque `push` / `pull_request`
+- Workflow de release macOS (`.app` + `.zip`) : `.github/workflows/release-macos.yml`
+
+## Distribution macOS
+
+- Guide distribution : `docs/MACOS_DISTRIBUTION.md`
+- Setup secrets Apple pour signature/notarisation : `docs/APPLE_SECRETS_SETUP.md`
 
 ## Licence GPLv3
 

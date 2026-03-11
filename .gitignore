@@ -26,3 +26,6 @@ Packages/
 
 # Logs
 *.log
+
+# Local distribution artifacts
+dist/
