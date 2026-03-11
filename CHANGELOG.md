@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2026-03-11
+
+### Added
+
+- Official app icon asset committed to the repository:
+  - `assets/AppIcon.png` (source image)
+- Release packaging now embeds this icon in `MuniConvert.app` via the existing icon pipeline.
+
 ## [1.0.4] - 2026-03-11
 
 ### Fixed
