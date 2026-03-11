@@ -158,6 +158,7 @@ MuniConvert/
 
 - Guide distribution : `docs/MACOS_DISTRIBUTION.md`
 - Setup secrets Apple pour signature/notarisation : `docs/APPLE_SECRETS_SETUP.md`
+- Icône app personnalisée : déposer `assets/AppIcon.png` (le build génère automatiquement `assets/AppIcon.icns`)
 
 ### Sans compte Apple Developer
 

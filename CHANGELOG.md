@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2026-03-11
+
+### Fixed
+
+- Main window layout improvements:
+  - left pane content now stays inside the window bounds
+  - `HSplitView` divider is now truly resizable (removed narrow max width cap)
+  - collision selector labels shortened in segmented control to prevent horizontal overflow
+
+### Added
+
+- App icon pipeline:
+  - new `scripts/release/generate_icns.sh` utility
+  - automatic `assets/AppIcon.png` -> `assets/AppIcon.icns` conversion during release build
+  - `assets/README.md` with icon placement guidelines
+
 ## [1.0.3] - 2026-03-11
 
 ### Fixed

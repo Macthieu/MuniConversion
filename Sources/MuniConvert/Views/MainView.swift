@@ -12,13 +12,15 @@ struct MainView: View {
 
             HSplitView {
                 leftPanel
-                    .frame(minWidth: 420, idealWidth: 460, maxWidth: 520)
+                    .frame(minWidth: 360, idealWidth: 460)
 
                 resultsZone
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(minWidth: 560, maxWidth: .infinity, maxHeight: .infinity)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .frame(minWidth: 1200, minHeight: 780)
         .alert(item: $viewModel.alertInfo) { alert in
             Alert(
@@ -75,14 +77,18 @@ struct MainView: View {
     }
 
     private var leftPanel: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                selectionZone
-                conversionZone
-                settingsZone
+        GeometryReader { proxy in
+            ScrollView(.vertical) {
+                VStack(alignment: .leading, spacing: 12) {
+                    selectionZone
+                    conversionZone
+                    settingsZone
+                }
+                .frame(width: max(proxy.size.width - 1, 0), alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .clipped()
         }
+        .frame(maxHeight: .infinity)
     }
 
     private var selectionZone: some View {
@@ -150,10 +156,11 @@ struct MainView: View {
                 labeledRow(label: "Collision") {
                     Picker("Collision", selection: $viewModel.collisionPolicy) {
                         ForEach(CollisionPolicy.allCases) { policy in
-                            Text(policy.displayName).tag(policy)
+                            Text(policy.compactDisplayName).tag(policy)
                         }
                     }
                     .pickerStyle(.segmented)
+                    .help("Politique en cas de fichier cible existant.")
                 }
 
                 HStack(spacing: 8) {

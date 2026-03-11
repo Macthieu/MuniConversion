@@ -44,6 +44,7 @@ Scripts disponibles:
 - `bash scripts/release/build_dist.sh`
   - build release
   - crée `dist/MuniConvert.app`
+  - génère automatiquement `assets/AppIcon.icns` si `assets/AppIcon.png` est présent
   - applique une signature ad-hoc au bundle
   - crée `dist/MuniConvert-<version>-unsigned.zip`
 

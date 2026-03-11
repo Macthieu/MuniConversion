@@ -7,6 +7,7 @@ Ce document décrit la préparation d'un artefact `.app` distribuable sur macOS.
 - `scripts/release/build_dist.sh`
   - Build release Swift
   - Génération `MuniConvert.app`
+  - Génération automatique de l'icône `.icns` depuis `assets/AppIcon.png` (si présent)
   - Signature ad-hoc du bundle (compatibilité Gatekeeper de base)
   - Création d'un ZIP non notarisé (`dist/*-unsigned.zip`)
 
@@ -14,6 +15,10 @@ Ce document décrit la préparation d'un artefact `.app` distribuable sur macOS.
   - Signature du bundle `.app`
   - Notarisation (si credentials fournis)
   - Création d'un ZIP signé (`dist/*-macOS.zip`)
+
+- `scripts/release/generate_icns.sh`
+  - Conversion `assets/AppIcon.png` -> `assets/AppIcon.icns`
+  - Crop carré centré + génération des tailles Apple standard
 
 ## Variables d'environnement
 
@@ -95,3 +100,6 @@ Note:
 
 - Ce mode est adapté à un usage personnel/interne.
 - Pour une distribution large sans alertes Gatekeeper, la signature/notarisation reste recommandée.
+ - `scripts/release/generate_icns.sh`
+  - Conversion `assets/AppIcon.png` -> `assets/AppIcon.icns`
+  - Crop carré centré + génération des tailles Apple standard

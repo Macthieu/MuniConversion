@@ -30,6 +30,9 @@ normalize_version_for_plist() {
 
 PLIST_VERSION="$(normalize_version_for_plist "$RAW_VERSION")"
 DIST_VERSION="${RAW_VERSION:-$PLIST_VERSION}"
+ICON_PNG="$ROOT_DIR/assets/AppIcon.png"
+ICON_ICNS="$ROOT_DIR/assets/AppIcon.icns"
+ICON_SCRIPT="$ROOT_DIR/scripts/release/generate_icns.sh"
 
 echo "[build] swift build -c release --product $APP_NAME"
 swift build -c release --product "$APP_NAME"
@@ -76,8 +79,13 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
 </plist>
 PLIST
 
-if [[ -f "$ROOT_DIR/assets/AppIcon.icns" ]]; then
-  cp "$ROOT_DIR/assets/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
+if [[ -f "$ICON_PNG" ]]; then
+  echo "[icon] generating AppIcon.icns from AppIcon.png"
+  bash "$ICON_SCRIPT" "$ICON_PNG" "$ICON_ICNS"
+fi
+
+if [[ -f "$ICON_ICNS" ]]; then
+  cp "$ICON_ICNS" "$APP_DIR/Contents/Resources/AppIcon.icns"
   /usr/libexec/PlistBuddy -c "Add :CFBundleIconFile string AppIcon" "$APP_DIR/Contents/Info.plist" || true
 fi
 

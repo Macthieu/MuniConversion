@@ -19,4 +19,15 @@ enum CollisionPolicy: String, CaseIterable, Identifiable, Codable {
             return "Renommer automatiquement"
         }
     }
+
+    var compactDisplayName: String {
+        switch self {
+        case .skipExisting:
+            return "Ignorer"
+        case .overwrite:
+            return "Remplacer"
+        case .renameWithSuffix:
+            return "Renommer"
+        }
+    }
 }
