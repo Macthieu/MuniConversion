@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2026-03-11
+
+### Fixed
+
+- Additional startup crash fix for multilingual builds:
+  - removed runtime dependency on `Bundle.module` in `LocalizationService`
+  - added robust resource-bundle lookup for installed `.app`, `swift run`, and test contexts
+  - prevents `NSBundle.module` assertion failure seen in `v1.1.1`
+
 ## [1.1.1] - 2026-03-11
 
 ### Fixed
