@@ -142,7 +142,7 @@ MuniConvert/
 ## Publication GitHub et versions
 
 - Plan de releases : voir `docs/RELEASES.md`
-- CI GitHub : `swift build` sur macOS à chaque `push` / `pull_request`
+- CI GitHub : `swift build` + `swift test` sur macOS à chaque `push` / `pull_request`
 
 ## Licence GPLv3
 

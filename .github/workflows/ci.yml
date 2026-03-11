@@ -23,3 +23,6 @@ jobs:
 
       - name: Swift build
         run: swift build
+
+      - name: Swift test
+        run: swift test
