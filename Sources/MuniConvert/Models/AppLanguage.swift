@@ -5,6 +5,7 @@ import Foundation
 enum AppLanguage: String, CaseIterable, Identifiable, Codable {
     case french = "fr"
     case english = "en"
+    case spanish = "es"
 
     var id: String { rawValue }
 
@@ -16,10 +17,20 @@ enum AppLanguage: String, CaseIterable, Identifiable, Codable {
             return "Français"
         case (.english, .french):
             return "Anglais"
+        case (.spanish, .french):
+            return "Espagnol"
         case (.french, .english):
             return "French"
         case (.english, .english):
             return "English"
+        case (.spanish, .english):
+            return "Spanish"
+        case (.french, .spanish):
+            return "Francés"
+        case (.english, .spanish):
+            return "Inglés"
+        case (.spanish, .spanish):
+            return "Español"
         }
     }
 }

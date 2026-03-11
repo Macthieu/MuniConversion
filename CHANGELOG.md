@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-03-11
+
+### Added
+
+- New app language: Spanish (`es`)
+- Trilingual interface support: French / English / Spanish
+- New `ROADMAP.md` with short/mid/long-term project milestones
+
+### Changed
+
+- GitHub workflows updated to reduce Node 20 deprecation warnings:
+  - `actions/checkout@v5`
+  - replaced JavaScript Xcode setup action with native shell-based Xcode selection
+  - replaced JS release upload action with GitHub CLI (`gh release upload`)
+
 ## [1.1.2] - 2026-03-11
 
 ### Fixed

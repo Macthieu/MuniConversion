@@ -55,6 +55,7 @@
 "status.version_format" = "Version: %@";
 "language.french" = "French";
 "language.english" = "English";
+"language.spanish" = "Spanish";
 "collision.skip" = "Skip if exists";
 "collision.overwrite" = "Overwrite";
 "collision.rename" = "Auto rename";
