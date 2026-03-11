@@ -48,6 +48,11 @@ Déclenchement:
 - push de tag `v*`
 - `workflow_dispatch`
 
+Comportement:
+
+- Sur tag (`refs/tags/v*`): publication des ZIP sur la Release GitHub
+- Hors tag (ex: `main` en manuel): upload des ZIP comme artifact de workflow
+
 Secrets recommandés pour release signée/notarisée:
 
 - `APPLE_CERTIFICATE_BASE64`
