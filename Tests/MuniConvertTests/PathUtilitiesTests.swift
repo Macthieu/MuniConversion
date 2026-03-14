@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import MuniConvert
+@testable import MuniConvertCore
 
 struct PathUtilitiesTests {
     @Test

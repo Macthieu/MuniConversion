@@ -1,5 +1,5 @@
 import Testing
-@testable import MuniConvert
+@testable import MuniConvertCore
 
 struct FileScannerTests {
     @Test

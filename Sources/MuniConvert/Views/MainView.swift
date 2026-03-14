@@ -2,11 +2,13 @@
 
 import SwiftUI
 
-struct MainView: View {
+public struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @State private var showRealConversionConfirmation = false
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             header
 

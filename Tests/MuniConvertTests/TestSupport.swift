@@ -1,5 +1,5 @@
 import Foundation
-@testable import MuniConvert
+@testable import MuniConvertCore
 
 final class TempDirectory {
     let url: URL
