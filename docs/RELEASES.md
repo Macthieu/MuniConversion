@@ -19,7 +19,7 @@ Tags/releases proposés :
 
 Titre de release :
 
-`MuniConvert vX.Y.Z - <focus>`
+`MuniConversion vX.Y.Z - <focus>`
 
 Contenu minimal :
 

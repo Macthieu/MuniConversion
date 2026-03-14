@@ -1,8 +1,8 @@
-# MuniConvert v1.1.0
+# MuniConversion v1.1.0
 
 Utilitaire macOS natif pour la conversion documentaire en lot via LibreOffice, local et open source.
 
-## Ce que fait MuniConvert
+## Ce que fait MuniConversion
 
 - Scan d'un dossier (avec ou sans sous-dossiers)
 - Filtrage strict des fichiers selon le profil choisi

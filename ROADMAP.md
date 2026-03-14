@@ -1,6 +1,6 @@
-# Roadmap MuniConvert
+# Roadmap MuniConversion
 
-Cette feuille de route garde MuniConvert simple, local, et maintenable.
+Cette feuille de route garde MuniConversion simple, local, et maintenable.
 
 ## Court terme (v1.2.x)
 

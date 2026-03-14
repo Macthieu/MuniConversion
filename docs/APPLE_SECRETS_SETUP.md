@@ -27,7 +27,7 @@ Ajouter la valeur dans le secret GitHub: `APPLE_CERTIFICATE_BASE64`.
 Depuis la racine du repo:
 
 ```bash
-bash scripts/release/configure_github_secrets.sh --repo Macthieu/MuniConvert --cert /chemin/vers/certificate.p12
+bash scripts/release/configure_github_secrets.sh --repo Macthieu/MuniConversion --cert /chemin/vers/certificate.p12
 ```
 
 Le script configure tous les secrets requis dans GitHub.

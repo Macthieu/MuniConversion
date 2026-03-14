@@ -1,10 +1,20 @@
-# MuniConvert
+# MuniConversion
 
 **Sous-titre :** utilitaire macOS natif pour la conversion documentaire en lot, localement, de façon fiable et prévisible.
 
-MuniConvert est une application macOS (Swift + SwiftUI) qui orchestre des conversions de documents en lot via LibreOffice en mode headless, avec filtrage strict, journalisation claire et mode simulation.
+MuniConversion est une application macOS (Swift + SwiftUI) qui orchestre des conversions de documents en lot via LibreOffice en mode headless, avec filtrage strict, journalisation claire et mode simulation.
 
-## Pourquoi MuniConvert ?
+## Positionnement
+
+- Rôle: outil spécialisé de conversion dans l'écosystème Orchiviste.
+- Orchiviste reste le cockpit/hub; MuniConversion reste un outil autonome dédié.
+
+## Mission
+
+- Standardiser les conversions documentaires bureautiques de façon locale, fiable et auditable.
+- Réduire la manipulation manuelle répétitive avant archivage et traitement métier.
+
+## Pourquoi MuniConversion ?
 
 - Éviter les manipulations manuelles répétitives de conversion fichier par fichier.
 - Standardiser les traitements bureautiques (archives, administration, dossiers partagés).
@@ -65,7 +75,7 @@ MuniConvert est une application macOS (Swift + SwiftUI) qui orchestre des conver
 
 ## Le logiciel ne modifie jamais les originaux
 
-MuniConvert **ne modifie pas** et **ne supprime pas** les fichiers d’origine.
+MuniConversion **ne modifie pas** et **ne supprime pas** les fichiers d’origine.
 
 - Les conversions créent uniquement de nouveaux fichiers de sortie.
 - En mode simulation, aucune conversion réelle n’est exécutée.
@@ -80,7 +90,7 @@ MuniConvert **ne modifie pas** et **ne supprime pas** les fichiers d’origine.
 
 ## Dépendance à LibreOffice
 
-MuniConvert est une interface graphique : le moteur de conversion repose sur LibreOffice (`soffice`).
+MuniConversion est une interface graphique : le moteur de conversion repose sur LibreOffice (`soffice`).
 
 Chemins testés automatiquement :
 
@@ -125,7 +135,7 @@ swift run MuniConvert
 ## Structure du projet
 
 ```text
-MuniConvert/
+MuniConversion/
 ├── Package.swift
 ├── Sources/
 │   └── MuniConvert/
@@ -174,7 +184,7 @@ Feuille de route détaillée: voir `ROADMAP.md`.
 
 ### Sans compte Apple Developer
 
-MuniConvert peut être distribué sans signature/notarisation:
+MuniConversion peut être distribué sans signature/notarisation:
 
 - Le workflow release publie un ZIP ad-hoc signé (`*-unsigned.zip`) mais non notarisé
 - L'application reste utilisable localement
@@ -185,7 +195,7 @@ Premier lancement sur macOS (app non signée):
 2. Confirmer l'ouverture
 3. Si nécessaire: `Réglages Système > Confidentialité et sécurité > Ouvrir quand même`
 
-Si macOS affiche `MuniConvert est endommagé`:
+Si macOS affiche `MuniConvert est endommagé` (nom technique actuel du bundle):
 
 1. Supprimer l'ancienne copie de `MuniConvert.app`
 2. Télécharger une release >= `v1.0.3`
@@ -197,6 +207,16 @@ Ce projet est distribué sous licence **GNU General Public License v3.0**.
 
 - Voir [LICENSE](LICENSE)
 - Les fichiers source incluent un en-tête court `SPDX-License-Identifier: GPL-3.0-only`
+
+## Versionnage
+
+- Le projet suit `Semantic Versioning`.
+- Référence actuelle: `1.1.0`.
+
+## Note de transition de nommage
+
+Le nom public est `MuniConversion`.
+Certains identifiants techniques internes historiques restent temporairement en `MuniConvert` (package, targets, nom d'app dans les scripts et commandes) pour éviter un refactor applicatif dans cette passe.
 
 ## Sécurité
 

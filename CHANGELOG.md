@@ -117,7 +117,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Stable baseline of MuniConvert as a macOS SwiftUI batch conversion utility
+- Stable baseline of MuniConversion as a macOS SwiftUI batch conversion utility
 - Strong UX guardrails before real conversion (preconditions, clear blockers, enriched confirmation)
 - Profile workflow improvements:
   - extended built-in profile set (including OpenDocument and inverse legacy conversions)
@@ -190,7 +190,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Initial MVP of MuniConvert
+- Initial MVP of MuniConversion
 - SwiftUI macOS UI with folder selection, conversion profile selection, logs and stats
 - Recursive/non-recursive file scan with strict extension filtering
 - Temporary/system file exclusion (`~$*`, `.DS_Store`, hidden files option)

@@ -1,6 +1,6 @@
 # Build & Release Guide
 
-Ce guide documente une procédure simple et répétable pour préparer une release MuniConvert.
+Ce guide documente une procédure simple et répétable pour préparer une release MuniConversion.
 
 ## 1. Préparation locale
 
@@ -32,10 +32,10 @@ Ce guide documente une procédure simple et répétable pour préparer une relea
 2. Push `main`:
    - `git push origin main`
 3. Créer et pousser un tag annoté:
-   - `git tag -a vX.Y.Z -m "MuniConvert vX.Y.Z"`
+   - `git tag -a vX.Y.Z -m "MuniConversion vX.Y.Z"`
    - `git push origin vX.Y.Z`
 4. Créer la release GitHub:
-   - `gh release create vX.Y.Z --title "MuniConvert vX.Y.Z" --notes "..."`
+   - `gh release create vX.Y.Z --title "MuniConversion vX.Y.Z" --notes "..."`
 
 ## 5. Distribution `.app` locale
 

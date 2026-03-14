@@ -1,5 +1,5 @@
 name: Bug report
-description: Signaler un comportement incorrect de MuniConvert
+description: Signaler un comportement incorrect de MuniConversion
 title: "bug: "
 labels:
   - bug
@@ -55,5 +55,5 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Extrait du journal MuniConvert
+      label: Extrait du journal MuniConversion
       render: text

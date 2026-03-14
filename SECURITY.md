@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-MuniConvert is currently maintained on the latest `main` branch and the latest tagged release.
+MuniConversion is currently maintained on the latest `main` branch and the latest tagged release.
 
 ## Reporting a Vulnerability
 
@@ -19,7 +19,7 @@ Until a dedicated security contact is added, open a private GitHub security advi
 
 ## Scope Notes
 
-MuniConvert is a local desktop utility. Security-sensitive areas include:
+MuniConversion is a local desktop utility. Security-sensitive areas include:
 
 - command execution through `Process`
 - path handling and file writes
