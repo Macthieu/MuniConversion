@@ -13,7 +13,7 @@ env:
 jobs:
   build:
     name: Build (macOS)
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout
@@ -29,6 +29,16 @@ jobs:
           fi
           sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
           xcodebuild -version
+
+      - name: Verify Swift 6 toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          swift --version
+          if ! swift --version | grep -E "Swift version 6\\." >/dev/null; then
+            echo "Swift 6.x is required for CI." >&2
+            exit 1
+          fi
 
       - name: Swift build
         run: swift build
