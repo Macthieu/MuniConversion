@@ -13,7 +13,7 @@ env:
 jobs:
   build:
     name: Build (macOS)
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
       - name: Checkout
@@ -30,13 +30,19 @@ jobs:
           sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
           xcodebuild -version
 
-      - name: Verify Swift 6 toolchain
+      - name: Verify Swift 6.1+ toolchain
         shell: bash
         run: |
           set -euo pipefail
           swift --version
-          if ! swift --version | grep -E "Swift version 6\\." >/dev/null; then
-            echo "Swift 6.x is required for CI." >&2
+          VERSION_TUPLE="$(swift --version | sed -n 's/.*Swift version \([0-9][0-9]*\)\.\([0-9][0-9]*\).*/\1 \2/p' | head -n 1)"
+          if [[ -z "${VERSION_TUPLE:-}" ]]; then
+            echo "Unable to parse Swift version." >&2
+            exit 1
+          fi
+          read -r SWIFT_MAJOR SWIFT_MINOR <<< "$VERSION_TUPLE"
+          if (( SWIFT_MAJOR < 6 || (SWIFT_MAJOR == 6 && SWIFT_MINOR < 1) )); then
+            echo "Swift 6.1+ is required for CI." >&2
             exit 1
           fi
 
